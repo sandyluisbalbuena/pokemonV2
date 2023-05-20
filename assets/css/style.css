@@ -2,6 +2,9 @@ html, body {
     overflow-x: hidden;
 }
 
+body {
+    background-color: #c8c8c8;
+}
 
 /* Customize the scrollbar track */
 ::-webkit-scrollbar {
@@ -22,5 +25,53 @@ html, body {
 
 ::-webkit-scrollbar-track {
     background-color: #888;
-  }
+}
 
+#preloader-background {
+    background: #c8c8c8;
+    background-size: 10%;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 10;
+}
+
+#preloader {
+    background: no-repeat center center url(../images/misc/pokeball_loader.png);
+    animation: rotate-infinite 2s linear infinite;background-size: 10%;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 20;
+}
+
+@keyframes rotate-infinite {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
+section{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------------------- */
+
+pokemonBackroundColor {
+    background: linear-gradient(to right, #ff0000 0%, #00ff00 50%, #0000ff 100%);
+}

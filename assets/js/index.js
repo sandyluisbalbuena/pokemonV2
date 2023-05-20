@@ -1,18 +1,20 @@
 //ILOVEXUXA
 
+var loaderbackground = document.getElementById("preloader-background");
+
 // initiate splide
 if (window.innerWidth <= 768) {
-    // Your script code here
     var splide = new Splide( '.splide', {
         type   : 'loop',
         perPage: 3,
-        autoplay: true,
         focus  : 'center',
-        interval: 900,
-        speed: 100000,
-        arrows: false, // Remove navigation buttons
+        arrows: false, 
         pagination: false,
         rewind: true,
+        drag   : 'free',
+        autoplay: true,
+        speed: 100000,
+        interval:1000,
     } ).mount();
     // ...
 }
@@ -20,47 +22,28 @@ else{
     var splide = new Splide( '.splide', {
         type   : 'loop',
         perPage: 10,
-        autoplay: true,
         focus  : 'center',
-        interval: 900,
-        speed: 100000,
-        arrows: false, // Remove navigation buttons
+        arrows: false, 
         pagination: false,
         rewind: true,
+        drag   : 'free',
+        autoplay: true,
+        speed: 100000,
+        interval:1000,
     } ).mount();
 }
 
 
 
-// function checkScreenSize() {
-//     if (window.innerWidth <= 768) {
-//         var splide = new Splide( '.splide', {
-//             type   : 'loop',
-//             perPage: 3,
-//             focus  : 'center',
-//         } ).mount();
-//     }
-//     else{
-//         var splide = new Splide( '.splide', {
-//             type   : 'loop',
-//             perPage: 10,
-//             focus  : 'center',
-//             interval: 3000,
-//             speed: 1000,
-//         } ).mount();
-//     }
-// }
+//284445
 
-// checkScreenSize();
-// window.addEventListener('resize', checkScreenSize);
-
-// $(document).ready(function(){
-//     splide.mount();
-// })
+// window.addEventListener("load", function(){
+    
+// });
 
 
 // fetch pokemon data
-function getpokemon(pokemonEnd,pokemonStart)
+function getpokemondata(pokemonStart,pokemonEnd)
 {
     let RAPIDAPI_API_URL = 'https://pokeapi.co/api/v2/pokemon?limit='+pokemonEnd+'&offset='+pokemonStart;
 
@@ -73,37 +56,53 @@ function getpokemon(pokemonEnd,pokemonStart)
 
         // https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/1x/'+pokemons[pokemonsname2d].name+'-s.png
 
-     
-
         pokemons.forEach((pokemon) => {
 
             console.log(pokemon.name);
 
+
+
             let newImg = document.createElement('img');
             // newImg.classList.add('col-xs-1'); 
             newImg.setAttribute('src', 'https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/1x/'+pokemon.name+'.png');
+            newImg.setAttribute('data-mdb-toggle', 'tooltip');
+            newImg.setAttribute('title', pokemon.name);
+            // new mdb.Tooltip(newImg).init();
+
+            let newAnchor = document.createElement('a');
+            newAnchor.setAttribute('href', 'pokedex.html?pokemonName='+pokemon.name+'#pokedexSection');
+
+            newAnchor.appendChild(newImg);
+
+
+            mdb.Tooltip.getInstance(newImg) || new mdb.Tooltip(newImg).show();
 
             let newSlide = document.createElement('li');
             newSlide.className = 'splide__slide';
             // newSlide.textContent = 'New Slide';
 
-            newSlide.appendChild(newImg);
+            newSlide.appendChild(newAnchor);
 
             splide.add(newSlide);
         });
-
-
-
         
-
     })
     .catch(error => console.error('On get pokemon error', error))
     .then(() => { 
         // $(document).ready(function(){
-           
+            
+            // setTimeout(resolve, 3000);  
         // });
-    }) 
+        new Promise((resolve) => {
+            loaderbackground.classList.add('animate__animated'); 
+            loaderbackground.classList.add('animate__fadeOut');
+            setTimeout(() => resolve(), 1000); // Delay execution by 3 seconds
+        }).then(() => {
+            loaderbackground.style.display = "none";
+        });
+
+    })
 }
 
 
-getpokemon(20,0)
+getpokemondata(0,20)
