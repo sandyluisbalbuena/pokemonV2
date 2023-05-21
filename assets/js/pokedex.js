@@ -243,9 +243,12 @@ function getonepokemondata(pokemonName)
     let title = pokemonSectionResult.querySelectorAll('h5');
     let dexEntry = pokemonSectionResult.querySelectorAll('p');//splideCards
 
+    document.getElementById('splideCardsId').innerHTML="";
+
     if (window.innerWidth <= 768) {
         var splideCards = new Splide( '#splideCards', {
             perPage: 1,
+            type   : 'loop',
             focus  : 'center',
             autoplay: true,
             speed: 100,
@@ -259,6 +262,7 @@ function getonepokemondata(pokemonName)
     else{
         var splideCards = new Splide( '#splideCards', {
             perPage: 10,
+            type   : 'loop',
             focus  : 'center',
             autoplay: true,
             speed: 100,
@@ -270,7 +274,7 @@ function getonepokemondata(pokemonName)
         } ).mount();
     }
 
-    document.getElementById('pokeCard').innerHTML="Pikachu Cards"
+    document.getElementById('pokeCard').innerHTML=pokemonName+" Cards";
 
     axios.get(`https://api.pokemontcg.io/v1/cards?name=`+pokemonName)
     .then(response => {
@@ -303,6 +307,8 @@ function getonepokemondata(pokemonName)
 
 
     pokemontypes.innerHTML='';
+
+
     let removeClass = backgroundColor.classList[3];
     if (backgroundColor.classList.contains(removeClass)) {
         backgroundColor.classList.remove(removeClass);
@@ -675,7 +681,7 @@ function forCards(image){
         // imageUrl: image,
         // imageWidth: ,
         // imageHeight: 200,
-        html: '<img width="50%" src="'+image+'" class="rounded">',
+        html: '<img width="90%" src="'+image+'" class="rounded">',
         customClass: {
         image: 'swal2-image',
         },
