@@ -1,6 +1,8 @@
 //ILOVEXUXA
 
 var pokemonsTypestoProcess;
+var EvolutionChainSection = document.getElementById('EvolutionChainSection');
+// console.log(document.getElementById('EvolutionChainSection'));
 
 
 function handleKeyPress(event) {
@@ -11,7 +13,6 @@ function handleKeyPress(event) {
 }
 
 var table = $('#myTable').DataTable();
-
 
 
 function pokemonSearch(){
@@ -31,6 +32,8 @@ window.addEventListener("load", function(){
     else{
         var pokemonName = urlParams.get('pokemonName');
     }
+    // loaderbackground.style.display = "none";
+
 
     getonepokemondata(pokemonName);
 });
@@ -43,6 +46,11 @@ window.addEventListener("load", function(){
 function getpokemondata(pokemonStart,pokemonEnd)
 {
     let RAPIDAPI_API_URL = 'https://pokeapi.co/api/v2/pokemon?limit='+pokemonEnd+'&offset='+pokemonStart;
+
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 
 
     if (window.innerWidth <= 768) {
@@ -62,7 +70,7 @@ function getpokemondata(pokemonStart,pokemonEnd)
     else{
         var splide = new Splide( '.splide', {
             type   : 'loop',
-            perPage: 10,
+            perPage: 6,
             focus  : 'center',
             arrows: false, 
             pagination: false,
@@ -97,7 +105,7 @@ function getpokemondata(pokemonStart,pokemonEnd)
         else{
             var splide = new Splide( '.splide', {
                 type   : 'loop',
-                perPage: 10,
+                perPage: 6,
                 focus  : 'center',
                 arrows: false, 
                 pagination: false,
@@ -128,7 +136,7 @@ function getpokemondata(pokemonStart,pokemonEnd)
             axios.get(`https://pokeapi.co/api/v2/pokemon/`+pokemon.name)
             .then(response => {
 
-                // console.log(response.data.types)
+                // console.log(response.data.id)
                 // console.log(pokemonsTypestoProcess);
 
                 let array1 =[];
@@ -154,10 +162,14 @@ function getpokemondata(pokemonStart,pokemonEnd)
 
                     let commonType = array1.filter(item => array2.includes(item));
 
+                    // EvolutionChainSection.innerHTML += '<img onclick="getonepokemondata(`'+nameAndId[0]+'`)" class="hvr-float" width="150px" src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+nameAndId[1].toString().padStart(3, `0`)+'.png">';
                     let newImg = document.createElement('img');
                     // newImg.classList.add('col-xs-1'); 
-                    newImg.setAttribute('src', 'https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/1x/'+pokemon.name+'.png');
+                    newImg.setAttribute('src', 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+response.data.id.toString().padStart(3, `0`)+'.png');
+                    newImg.setAttribute('width', '100px');
+                    // newImg.setAttribute('src', 'https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/1x/'+pokemon.name+'.png');
                     newImg.setAttribute('onclick', 'getonepokemondata("'+pokemon.name+'")');
+                    newImg.className = 'hvr-float';
                     // newImg.setAttribute('href', '#');
                     // newImg.setAttribute('data-mdb-toggle', 'tooltip');
                     // newImg.setAttribute('title', 'Im '+pokemon.name+', and Im also a '+commonType[0]+' type.');
@@ -177,6 +189,7 @@ function getpokemondata(pokemonStart,pokemonEnd)
             })
             .catch(error => console.error('On get one pokemon error', error))
             .then(() => { 
+               
 
             })
            
@@ -202,8 +215,6 @@ function getonepokemondata(pokemonName)
     let img = pokemonSectionResult.querySelectorAll('img');
     let title = pokemonSectionResult.querySelectorAll('h5');
     let dexEntry = pokemonSectionResult.querySelectorAll('p');
-
-    // img[0].width = '30%'; 
 
 
     pokemontypes.innerHTML='';
@@ -264,7 +275,7 @@ function getonepokemondata(pokemonName)
 
         response.data.types.forEach(function(type) {
 
-            pokemontypes.innerHTML+='<img class="animate__animated animate__fadeIn animate__delay-2s" src="assets/images/pokemonTypes/'+type.type.name+'text.png" width="20%"/>';
+            pokemontypes.innerHTML+='<img style="cursor:pointer;" onclick="dipatapos()" class="animate__animated animate__fadeIn animate__delay-2s" src="assets/images/pokemonTypes/'+type.type.name+'text.png" width="20%"/>';
 
             // console.log(type.type.name);
         });
@@ -342,12 +353,56 @@ function getonepokemondata(pokemonName)
 
         axios.get(response.data.species.url)
         .then(response => {
-            // console.log(response.data);
+            // console.log(response.data.evolution_chain.url);
+
+            axios.get(response.data.evolution_chain.url)
+            .then(response => {
+
+                console.log(response.data);
+                // console.log(response.data.chain.evolves_to);
+                // console.log(response.data.chain.species.name);
+                let chainEvo = [];
+
+                chainEvo.push(response.data.chain.species.name+"__"+response.data.chain.species.url.replace('https://pokeapi.co/api/v2/pokemon-species/', ""));
+
+                if(response.data.chain.evolves_to.length>0)
+                {
+                    response.data.chain.evolves_to.forEach(function(evolution) {
+                        chainEvo.push(evolution.species.name+"__"+evolution.species.url.replace('https://pokeapi.co/api/v2/pokemon-species/', ""));
+
+                        if(evolution.evolves_to.length>0)
+                        {
+                            evolution.evolves_to.forEach(function(evolution2) {
+                                // console.log(evolution.species.name);
+                                chainEvo.push(evolution2.species.name+"__"+evolution2.species.url.replace('https://pokeapi.co/api/v2/pokemon-species/', ""));
+                            })
+                        }
+                    })
+                }
+
+                EvolutionChainSection.innerHTML="";
+                EvolutionChainSection.className = "text-center"
+
+                chainEvo.forEach(function(name){
+                    // console.log(name.replace('/', ""))
+                    let nameAndId = name.replace('/', "");
+                    nameAndId = nameAndId.split("__");
+                    // nameAndId = nameAndId
+                    console.log(nameAndId);
+                    // EvolutionChainSection.innerHTML += '<img src="https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/1x/'+name+'.png">';
+                    EvolutionChainSection.innerHTML += '<img onclick="getonepokemondata(`'+nameAndId[0]+'`)" class="hvr-float" width="150px" src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+nameAndId[1].toString().padStart(3, `0`)+'.png">';
+                })
+
+            })
+            .catch(error => console.error('On get one pokemon evolution chain error', error))
+            .then(() => { 
+
+            })
+
             dexEntry[0].textContent = response.data.flavor_text_entries[0].flavor_text;
         })
-        .catch(error => console.error('On get one pokemon error', error))
+        .catch(error => console.error('On get pokemon species error', error))
         .then(() => { 
-
 
         })
 
@@ -397,9 +452,9 @@ function moveData(datamoves)
 
     // $(document).ready(function() {
         table = $('#myTable').DataTable( {
-            rowReorder: {
-                selector: 'td:nth-child(2)'
-            },
+            // rowReorder: {
+            //     selector: 'td:nth-child(2)'
+            // },
             responsive: true
         } );
     // } );
@@ -429,7 +484,8 @@ function moveData(datamoves)
             var newRow = table.row.add(newRowData).draw().node();
 
             // Add HTML tag or element to specific column
-            $(newRow).find('td:eq(0)').html('<a href="'+newRowData[0]+'">' + newRowData[0] + '</a>');
+
+            $(newRow).find('td:eq(0)').html('<a class="btn" onclick="dipatapos()" style="width:100%;">' + newRowData[0] + '</a>');
            
            
            
@@ -512,6 +568,16 @@ function getPokemonType(Pokename){
     .catch(error => console.error('On get one pokemon error', error))
     .then(() => { 
 
+    })
+}
+
+
+function dipatapos(){
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Coming Soon!',
+        footer: '<a href="">Why do I have this issue?</a>'
     })
 }
 

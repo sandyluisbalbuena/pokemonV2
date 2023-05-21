@@ -65,9 +65,9 @@ function getpokemondata(pokemonStart,pokemonEnd)
             let newImg = document.createElement('img');
             // newImg.classList.add('col-xs-1'); 
             newImg.setAttribute('src', 'https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/1x/'+pokemon.name+'.png');
-            newImg.setAttribute('data-mdb-toggle', 'tooltip');
+            // newImg.setAttribute('data-mdb-toggle', 'tooltip');
             newImg.setAttribute('title', pokemon.name);
-            // new mdb.Tooltip(newImg).init();
+            newImg.className = 'hvr-float';
 
             let newAnchor = document.createElement('a');
             newAnchor.setAttribute('href', 'pokedex.html?pokemonName='+pokemon.name+'#pokedexSection');
@@ -75,7 +75,7 @@ function getpokemondata(pokemonStart,pokemonEnd)
             newAnchor.appendChild(newImg);
 
 
-            mdb.Tooltip.getInstance(newImg) || new mdb.Tooltip(newImg).show();
+            // mdb.Tooltip.getInstance(newImg) || new mdb.Tooltip(newImg).show();
 
             let newSlide = document.createElement('li');
             newSlide.className = 'splide__slide';
