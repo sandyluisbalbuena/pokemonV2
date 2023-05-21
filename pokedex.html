@@ -49,7 +49,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarExample01">
     
-                    <a class="navbar-brand mt-2 mt-lg-0" href="#">
+                    <a class="navbar-brand mt-2 mt-lg-0" href="index.html">
                         <img src="assets/images/brand/pokemonBrandName.png" height="30" alt="MDB Logo" loading="lazy"/>
                     </a>
     
@@ -60,9 +60,9 @@
                         <li class="nav-item active">
                         <a class="nav-link active" aria-current="page" href="#">Pokedex</a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                         <a class="nav-link" href="#pokedexSectionResult">Result</a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                         <a class="nav-link" href="about.html">About</a>
                         </li>
@@ -132,6 +132,12 @@
                         </div>
                     </div> -->
                     <!-- Right elements -->
+                    <div class="d-flex input-group w-auto">
+                        <input onkeypress="handleKeyPress(event)" id="pokemonName" type="search" class="form-control rounded" placeholder="Pokemon Name" aria-label="Search" aria-describedby="search-addon" required/>
+                        <button class="btn bg-dark" type="submit"  onclick="pokemonSearch()">
+                            <i class="fas fa-search text-white"></i>
+                        </button>
+                    </div>
     
                 </div>
             </div>
@@ -154,7 +160,7 @@
     <main class="container"  id="pokedexSection">
 
         <section class="row mt-5">
-            <div class="col-12">
+            <!-- <div class="col-12">
                 <div class="d-flex input-group w-auto mt-5">
                     <input onkeypress="handleKeyPress(event)" id="pokemonName" type="search" class="form-control rounded" placeholder="Pokemon Name" aria-label="Search" aria-describedby="search-addon" required/>
                     <select id="pokemonTypeCategory" type="search" class="form-control rounded d-none d-lg-block" placeholder="Pokemon Search" aria-label="Search" aria-describedby="search-addon" disabled>
@@ -180,13 +186,13 @@
                         <i class="fas fa-search text-white"></i>
                     </button>
                 </div>
-            </div>
+            </div> -->
         </section>
 
 
 
 
-        <section class="row d-flex" id="pokedexSectionResult">
+        <section class="row d-flex mt-5" id="pokedexSectionResult">
 
             <div class="col-12 col-lg-3 mt-2">
                 <div style="height: 100%;">

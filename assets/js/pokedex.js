@@ -24,23 +24,7 @@ else{
     } ).mount();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 var splideRecentSearchItems = [];
-
-console.log(splideRecentSearch);
-
-
 
 
 function handleKeyPress(event) {
@@ -273,7 +257,7 @@ function getonepokemondata(pokemonName)
 
         pokemonsTypestoProcess = response.data.types;
 
-        getpokemondata(0,151);//for pokemonrelationtoothertype
+        getpokemondata(0,500);//for pokemonrelationtoothertype
 
 
         if (!splideRecentSearchItems.includes(response.data.name)) {
@@ -473,7 +457,6 @@ function getonepokemondata(pokemonName)
             options: options
         });
 
-
         
         // img2[1].src = 'assets/images/pokemonTypes/'+type1+'text.png';
         title[0].textContent = response.data.name.charAt(0).toUpperCase() + response.data.name.slice(1).toLowerCase();
@@ -533,18 +516,28 @@ function moveData(datamoves)
     //     responsive: true,
     // });
 
+    // tablemovespopulate
     datamoves.forEach(function(datamove) {
 
         axios.get('https://pokeapi.co/api/v2/move/'+datamove.move.name)
         .then(response => {
 
+            console.log(response.data);
+
             var newRowData = [response.data.name, response.data.accuracy, response.data.damage_class.name, response.data.power, response.data.pp, response.data.type.name];
-           
-           
             var newRow = table.row.add(newRowData).draw().node();
 
+            let moveDescriptiontobeuse = "";
 
-            $(newRow).find('td:eq(0)').html('<a class="btn" onclick="dipatapos()" style="width:100%;">' + newRowData[0] + '</a>');
+            response.data.flavor_text_entries.forEach(function(move){
+                if(move.language.name=='en')
+                {
+                    moveDescriptiontobeuse = move.flavor_text;
+                }
+            })
+
+
+            $(newRow).find('td:eq(0)').html('<a class="btn" onclick="moveDescription(`'+moveDescriptiontobeuse+'`)" style="width:100%;">' + newRowData[0] + '</a>');
             $(newRow).find('td:eq(5)').html('<img onclick="dipatapos()" src="assets/images/pokemonTypes/'+newRowData[5]+'text.png" style="width:100%; cursor:pointer">');
            
         })
@@ -610,5 +603,10 @@ function dipatapos(){
         text: 'Coming Soon!',
         footer: '<a href="">Why do I have this issue?</a>'
     })
+}
+
+function moveDescription(moveDescriptionData)
+{
+    Swal.fire(moveDescriptionData)
 }
 
