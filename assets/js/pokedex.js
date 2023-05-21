@@ -4,11 +4,32 @@ var pokemonsTypestoProcess;
 var EvolutionChainSection = document.getElementById('EvolutionChainSection');
 // console.log(document.getElementById('EvolutionChainSection'));
 
+// splideRecentSearch
+var splideRecentSearch = new Splide( '#splideRecentSearch', {
+    // type   : 'loop',
+    perPage: 10,
+    focus  : 'center',
+    // arrows: false, 
+    // pagination: false,
+    // rewind: true,
+    // drag   : 'free',
+    autoplay: true,
+    speed: 100,
+    interval:3000,
+} ).mount();
+
+var splideRecentSearchItems = [];
+
+console.log(splideRecentSearch);
+
+
+
 
 function handleKeyPress(event) {
     if (event.keyCode === 13) {
         let pokemonName = document.getElementById('pokemonName');
         getonepokemondata(pokemonName.value);
+        pokemonName.value="";
     }
 }
 
@@ -18,6 +39,7 @@ var table = $('#myTable').DataTable();
 function pokemonSearch(){
     let pokemonName = document.getElementById('pokemonName');
     getonepokemondata(pokemonName.value);
+    pokemonName.value="";
 }
 
 
@@ -36,6 +58,9 @@ window.addEventListener("load", function(){
 
 
     getonepokemondata(pokemonName);
+    pokemonName.value="";
+
+
 });
 
 
@@ -230,7 +255,33 @@ function getonepokemondata(pokemonName)
 
         pokemonsTypestoProcess = response.data.types;
 
-        getpokemondata(0,151);
+        getpokemondata(0,151);//for pokemonrelationtoothertype
+
+
+        if (!splideRecentSearchItems.includes(response.data.name)) {
+            splideRecentSearchItems.push(response.data.name);
+            let newImg = document.createElement('img');
+            // newImg.classList.add('col-xs-1'); 
+            newImg.setAttribute('src', 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+pokemonId+'.png');
+            newImg.setAttribute('width', '100px');
+            // newImg.setAttribute('src', 'https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/1x/'+pokemon.name+'.png');
+            newImg.setAttribute('onclick', 'getonepokemondata("'+response.data.name+'")');
+            newImg.className = 'hvr-float';
+            // newImg.setAttribute('href', '#');
+            // newImg.setAttribute('data-mdb-toggle', 'tooltip');
+            // newImg.setAttribute('title', 'Im '+pokemon.name+', and Im also a '+commonType[0]+' type.');
+            // new mdb.Tooltip(newImg).init();
+    
+            // mdb.Tooltip.getInstance(newImg) || new mdb.Tooltip(newImg).show();
+    
+            let newSlide = document.createElement('li');
+            newSlide.className = 'splide__slide';
+            // newSlide.textContent = 'New Slide';
+    
+            newSlide.appendChild(newImg);
+    
+            splideRecentSearch.add(newSlide);
+        } 
 
         // getPokemonType(1);
 
@@ -483,39 +534,10 @@ function moveData(datamoves)
            
             var newRow = table.row.add(newRowData).draw().node();
 
-            // Add HTML tag or element to specific column
 
             $(newRow).find('td:eq(0)').html('<a class="btn" onclick="dipatapos()" style="width:100%;">' + newRowData[0] + '</a>');
+            $(newRow).find('td:eq(5)').html('<img onclick="dipatapos()" src="assets/images/pokemonTypes/'+newRowData[5]+'text.png" style="width:100%; cursor:pointer">');
            
-           
-           
-            // table.row.add(newRowData).draw();
-            // console.log(response.data);
-            // let moveName = document.createElement("td");
-            // moveName.textContent = response.data.name;
-            // row.appendChild(moveName);
-
-
-            // let moveAccuracy = document.createElement("td");
-            // moveAccuracy.textContent = response.data.accuracy;
-            // row.appendChild(moveAccuracy);
-
-            // let damageClass = document.createElement("td");
-            // damageClass.textContent = response.data.damage_class;
-            // row.appendChild(damageClass);
-
-            // let movePower = document.createElement("td");
-            // movePower.textContent = response.data.power;
-            // row.appendChild(movePower);
-
-            // let movePp = document.createElement("td");
-            // movePp.textContent = response.data.pp;
-            // row.appendChild(movePp);
-
-            // let moveType = document.createElement("td");
-            // moveType.textContent = response.data.type;
-            // row.appendChild(moveType);
-
         })
         .catch(error => console.error('On get one pokemon error', error))
         .then(() => { 
