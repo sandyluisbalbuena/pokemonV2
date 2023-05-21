@@ -233,6 +233,8 @@ function getpokemondata(pokemonStart,pokemonEnd)
 //fetch specific pokemon data
 function getonepokemondata(pokemonName)
 {
+    document.getElementById('collapseExample2').classList.remove("show");
+    document.getElementById('collapseExample1').classList.remove("show");
     let pokemonSectionResult = document.getElementById('firstCard');
     let RAPIDAPI_API_URL = 'https://pokeapi.co/api/v2/pokemon/'+pokemonName;
     let pokemontypes = document.getElementById('pokemonTypes');
@@ -250,13 +252,13 @@ function getonepokemondata(pokemonName)
             perPage: 1,
             type   : 'loop',
             focus  : 'center',
-            autoplay: true,
-            speed: 100,
-            interval:3000,
-            arrows: false, 
+            // autoplay: true,
+            // speed: 100,
+            // interval:3000,
+            // arrows: false, 
             pagination: false,
             rewind: true,
-            drag   : 'free',
+            // drag   : 'free',
         } ).mount();
     }
     else{
@@ -264,18 +266,19 @@ function getonepokemondata(pokemonName)
             perPage: 10,
             type   : 'loop',
             focus  : 'center',
-            autoplay: true,
-            speed: 100,
-            interval:3000,
-            arrows: false, 
+            // autoplay: true,
+            // speed: 100,
+            // interval:3000,
+            // arrows: false, 
             pagination: false,
             rewind: true,
-            drag   : 'free',
+            // drag   : 'free',
         } ).mount();
     }
 
     document.getElementById('pokeCard').innerHTML=pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)+" Cards";
-
+    // var images;
+    //apicards
     axios.get(`https://api.pokemontcg.io/v1/cards?name=`+pokemonName)
     .then(response => {
         console.log(response.data.cards);
@@ -287,9 +290,13 @@ function getonepokemondata(pokemonName)
             let newImg = document.createElement('img');
             newImg.setAttribute('src', pokecard.imageUrlHiRes);
             newImg.setAttribute('width', '90%');
+            // newImg.setAttribute('style', 'opacity:0;');
+            newImg.className = 'cardloader';
+
+            // newImg.setAttribute('id', pokecard.id);
             // newImg.setAttribute('onclick', 'getonepokemondata("'+response.data.name+'")');
             newImg.setAttribute('onclick', 'forCards("'+pokecard.imageUrlHiRes+'")');
-            newImg.className = 'hvr-grow';
+            // newImg.className = 'hvr-grow';
 
             let newSlide = document.createElement('li');
             newSlide.className = 'splide__slide';
@@ -299,9 +306,22 @@ function getonepokemondata(pokemonName)
             splideCards.add(newSlide);
         })
 
+
+        images = document.getElementsByClassName("pokecard");
+
+        
+
+
     })
     .catch(error => console.error('On get one pokemon card error', error))
     .then(() => { 
+
+        // console.log(images);
+        // Array.from(images).forEach(function(image) {
+        //     image.addEventListener("load", function() {
+        //       this.style.display = "block";
+        //     });
+        // });
 
     })
 
@@ -321,7 +341,7 @@ function getonepokemondata(pokemonName)
 
         pokemonsTypestoProcess = response.data.types;
 
-        getpokemondata(0,500);//for pokemonrelationtoothertype
+        getpokemondata(0,251);//for pokemonrelationtoothertype
 
 
         if (!splideRecentSearchItems.includes(response.data.name)) {
@@ -466,7 +486,7 @@ function getonepokemondata(pokemonName)
             axios.get(response.data.evolution_chain.url)
             .then(response => {
 
-                console.log(response.data);
+                // console.log(response.data);
                 // console.log(response.data.chain.evolves_to);
                 // console.log(response.data.chain.species.name);
                 let chainEvo = [];
@@ -496,7 +516,7 @@ function getonepokemondata(pokemonName)
                     let nameAndId = name.replace('/', "");
                     nameAndId = nameAndId.split("__");
                     // nameAndId = nameAndId
-                    console.log(nameAndId);
+                    // console.log(nameAndId);
                     // EvolutionChainSection.innerHTML += '<img src="https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/1x/'+name+'.png">';
                     EvolutionChainSection.innerHTML += '<img onclick="getonepokemondata(`'+nameAndId[0]+'`)" class="hvr-float" width="150px" src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+nameAndId[1].toString().padStart(3, `0`)+'.png">';
                 })
@@ -586,7 +606,7 @@ function moveData(datamoves)
         axios.get('https://pokeapi.co/api/v2/move/'+datamove.move.name)
         .then(response => {
 
-            console.log(response.data);
+            // console.log(response.data);
 
             var newRowData = [response.data.name, response.data.accuracy, response.data.damage_class.name, response.data.power, response.data.pp, response.data.type.name];
             var newRow = table.row.add(newRowData).draw().node();
@@ -647,10 +667,10 @@ function getPokemonType(Pokename){
             array2.push(type.type.name)
         })
 
-        console.log(array1,array2);
+        // console.log(array1,array2);
 
 
-        console.log(array1.some(item => array2.includes(item)));
+        // console.log(array1.some(item => array2.includes(item)));
 
     })
     .catch(error => console.error('On get one pokemon error', error))
@@ -689,3 +709,20 @@ function forCards(image){
     })
 }
 
+var scrollButton = document.getElementById("scrollButton");
+
+window.addEventListener("scroll", function() {
+  if (window.pageYOffset > 100) {
+    scrollButton.style.display = "block";
+  } else {
+    scrollButton.style.display = "none";
+  }
+});
+
+scrollButton.addEventListener("click", function() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+});
+  

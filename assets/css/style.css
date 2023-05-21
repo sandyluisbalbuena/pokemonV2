@@ -68,10 +68,23 @@ div.sticky {
     border: 2px solid #4CAF50;
 }
 
+.cardloader{
+    background-image: url(../images/misc/cardloader.jpg);
+    background-size: cover;
+    background-position: center;
+}
 
 
 
 
+.scroll-button {
+    /* Add CSS styles for the scroll button */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    /* ... */
+  }
 
 
 
