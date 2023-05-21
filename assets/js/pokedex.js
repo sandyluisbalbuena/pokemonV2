@@ -5,18 +5,36 @@ var EvolutionChainSection = document.getElementById('EvolutionChainSection');
 // console.log(document.getElementById('EvolutionChainSection'));
 
 // splideRecentSearch
-var splideRecentSearch = new Splide( '#splideRecentSearch', {
-    // type   : 'loop',
-    perPage: 10,
-    focus  : 'center',
-    // arrows: false, 
-    // pagination: false,
-    // rewind: true,
-    // drag   : 'free',
-    autoplay: true,
-    speed: 100,
-    interval:3000,
-} ).mount();
+if (window.innerWidth <= 768) {
+    var splideRecentSearch = new Splide( '#splideRecentSearch', {
+        perPage: 1,
+        focus  : 'center',
+        autoplay: true,
+        speed: 100,
+        interval:3000,
+    } ).mount();
+}
+else{
+    var splideRecentSearch = new Splide( '#splideRecentSearch', {
+        perPage: 10,
+        focus  : 'center',
+        autoplay: true,
+        speed: 100,
+        interval:3000,
+    } ).mount();
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 var splideRecentSearchItems = [];
 
@@ -261,25 +279,16 @@ function getonepokemondata(pokemonName)
         if (!splideRecentSearchItems.includes(response.data.name)) {
             splideRecentSearchItems.push(response.data.name);
             let newImg = document.createElement('img');
-            // newImg.classList.add('col-xs-1'); 
             newImg.setAttribute('src', 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+pokemonId+'.png');
-            newImg.setAttribute('width', '100px');
-            // newImg.setAttribute('src', 'https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/1x/'+pokemon.name+'.png');
+            newImg.setAttribute('width', '60px');
             newImg.setAttribute('onclick', 'getonepokemondata("'+response.data.name+'")');
             newImg.className = 'hvr-float';
-            // newImg.setAttribute('href', '#');
-            // newImg.setAttribute('data-mdb-toggle', 'tooltip');
-            // newImg.setAttribute('title', 'Im '+pokemon.name+', and Im also a '+commonType[0]+' type.');
-            // new mdb.Tooltip(newImg).init();
-    
-            // mdb.Tooltip.getInstance(newImg) || new mdb.Tooltip(newImg).show();
     
             let newSlide = document.createElement('li');
             newSlide.className = 'splide__slide';
-            // newSlide.textContent = 'New Slide';
+            newSlide.className = 'text-center';
     
             newSlide.appendChild(newImg);
-    
             splideRecentSearch.add(newSlide);
         } 
 
