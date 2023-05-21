@@ -241,7 +241,7 @@ function getonepokemondata(pokemonName)
 
     let img = pokemonSectionResult.querySelectorAll('img');
     let title = pokemonSectionResult.querySelectorAll('h5');
-    let dexEntry = pokemonSectionResult.querySelectorAll('p');//splideCards
+    let dexEntry = pokemonSectionResult.querySelectorAll('p');
 
     document.getElementById('splideCardsId').innerHTML="";
 
@@ -274,7 +274,7 @@ function getonepokemondata(pokemonName)
         } ).mount();
     }
 
-    document.getElementById('pokeCard').innerHTML=pokemonName+" Cards";
+    document.getElementById('pokeCard').innerHTML=pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)+" Cards";
 
     axios.get(`https://api.pokemontcg.io/v1/cards?name=`+pokemonName)
     .then(response => {

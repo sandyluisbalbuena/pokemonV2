@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" integrity="sha512-csw0Ma4oXCAgd/d4nTcpoEoz4nYvvnk21a8VA2h2dzhPAvjbUIK6V3si7/g/HehwdunqqW18RwCJKpD7rL67Xg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- mystyle -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- sweetalert -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 
 
     <!-- <style>
@@ -42,19 +44,20 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg  navbar-dark bg-dark fixed-top">
             <div class="container-fluid">
+                <a class="navbar-brand mt-2 mt-lg-0" href="#">
+                    <img
+                        src="assets/images/brand/pokemonBrandName.png"
+                        height="30"
+                        alt="MDB Logo"
+                        loading="lazy"
+                    />
+                </a>
                 <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarExample01" aria-controls="navbarExample01"aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarExample01">
     
-                    <a class="navbar-brand mt-2 mt-lg-0" href="#">
-                        <img
-                            src="assets/images/brand/pokemonBrandName.png"
-                            height="30"
-                            alt="MDB Logo"
-                            loading="lazy"
-                        />
-                    </a>
+                    
     
     
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -64,9 +67,9 @@
                         <li class="nav-item">
                         <a class="nav-link" href="pokedex.html">Pokedex</a>
                         </li>
-                        <!-- <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
-                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link" class="btn" onclick="dipatapos()" style="cursor: pointer;">PokeCard</a>
+                        </li>
                         <li class="nav-item">
                         <a class="nav-link" href="about.html">About</a>
                         </li>
@@ -356,7 +359,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-auto-scroll@0.5.3/dist/js/splide-extension-auto-scroll.min.js"></script>
     <!-- axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+    <!-- sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
 
     <!-- myscript -->   
