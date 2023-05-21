@@ -241,7 +241,65 @@ function getonepokemondata(pokemonName)
 
     let img = pokemonSectionResult.querySelectorAll('img');
     let title = pokemonSectionResult.querySelectorAll('h5');
-    let dexEntry = pokemonSectionResult.querySelectorAll('p');
+    let dexEntry = pokemonSectionResult.querySelectorAll('p');//splideCards
+
+    if (window.innerWidth <= 768) {
+        var splideCards = new Splide( '#splideCards', {
+            perPage: 1,
+            focus  : 'center',
+            autoplay: true,
+            speed: 100,
+            interval:3000,
+            arrows: false, 
+            pagination: false,
+            rewind: true,
+            drag   : 'free',
+        } ).mount();
+    }
+    else{
+        var splideCards = new Splide( '#splideCards', {
+            perPage: 10,
+            focus  : 'center',
+            autoplay: true,
+            speed: 100,
+            interval:3000,
+            arrows: false, 
+            pagination: false,
+            rewind: true,
+            drag   : 'free',
+        } ).mount();
+    }
+
+    document.getElementById('pokeCard').innerHTML="Pikachu Cards"
+
+    axios.get(`https://api.pokemontcg.io/v1/cards?name=`+pokemonName)
+    .then(response => {
+        console.log(response.data.cards);
+
+
+        response.data.cards.forEach(function(pokecard){
+
+            console.log(pokecard.imageUrlHires)
+            let newImg = document.createElement('img');
+            newImg.setAttribute('src', pokecard.imageUrlHiRes);
+            newImg.setAttribute('width', '90%');
+            // newImg.setAttribute('onclick', 'getonepokemondata("'+response.data.name+'")');
+            newImg.setAttribute('onclick', 'forCards("'+pokecard.imageUrlHiRes+'")');
+            newImg.className = 'hvr-grow';
+
+            let newSlide = document.createElement('li');
+            newSlide.className = 'splide__slide';
+            newSlide.className = 'text-center';
+
+            newSlide.appendChild(newImg);
+            splideCards.add(newSlide);
+        })
+
+    })
+    .catch(error => console.error('On get one pokemon card error', error))
+    .then(() => { 
+
+    })
 
 
     pokemontypes.innerHTML='';
@@ -608,5 +666,20 @@ function dipatapos(){
 function moveDescription(moveDescriptionData)
 {
     Swal.fire(moveDescriptionData)
+}
+
+function forCards(image){
+    Swal.fire({
+        // title: 'Sweet!',
+        // text: 'Modal with a custom image.',
+        // imageUrl: image,
+        // imageWidth: ,
+        // imageHeight: 200,
+        html: '<img width="50%" src="'+image+'" class="rounded">',
+        customClass: {
+        image: 'swal2-image',
+        },
+        imageAlt: 'Custom image',
+    })
 }
 
