@@ -96,3 +96,10 @@ div.sticky {
 pokemonBackroundColor {
     background: linear-gradient(to right, #ff0000 0%, #00ff00 50%, #0000ff 100%);
 }
+
+.swal2-title {
+    font-family: Roboto, sans-serif !important;
+    font-size: 20px !important;
+    font-weight: lighter !important;
+    /* font-style: italic !important; */
+}
