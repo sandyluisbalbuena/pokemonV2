@@ -103,3 +103,11 @@ pokemonBackroundColor {
     font-weight: lighter !important;
     /* font-style: italic !important; */
 }
+
+
+
+@media (max-width:768px) {
+    html, body{
+        overflow-x: hidden;
+    }
+}
