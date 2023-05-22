@@ -286,7 +286,7 @@ function getonepokemondata(pokemonName)
 
         response.data.cards.forEach(function(pokecard){
 
-            console.log(pokecard.imageUrlHires)
+            // console.log(pokecard.imageUrlHires)
             let newImg = document.createElement('img');
             newImg.setAttribute('src', pokecard.imageUrlHiRes);
             newImg.setAttribute('width', '90%');
@@ -339,6 +339,9 @@ function getonepokemondata(pokemonName)
         let pokemonId = response.data.id.toString().padStart(3, '0');
         img[0].src = 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+pokemonId+'.png';
 
+
+        console.log(response.data);
+
         pokemonsTypestoProcess = response.data.types;
 
         getpokemondata(0,251);//for pokemonrelationtoothertype
@@ -359,9 +362,6 @@ function getonepokemondata(pokemonName)
             newSlide.appendChild(newImg);
             splideRecentSearch.add(newSlide);
         } 
-
-        // getPokemonType(1);
-
 
 
         // console.log(response.data);'<img class="animate__animated animate__fadeIn animate__delay-2s" src="" width="20%"/>'
@@ -409,9 +409,6 @@ function getonepokemondata(pokemonName)
         });
 
 
-        // console.log(pokemonId);
-
-        
 
         let HP = response.data.stats[0].base_stat;
         let ATTACK = response.data.stats[1].base_stat;
@@ -483,10 +480,12 @@ function getonepokemondata(pokemonName)
         .then(response => {
             // console.log(response.data.evolution_chain.url);
 
+            console.log(response.data);
+
             axios.get(response.data.evolution_chain.url)
             .then(response => {
 
-                // console.log(response.data);
+                console.log(response.data);
                 // console.log(response.data.chain.evolves_to);
                 // console.log(response.data.chain.species.name);
                 let chainEvo = [];
@@ -527,7 +526,15 @@ function getonepokemondata(pokemonName)
 
             })
 
-            dexEntry[0].textContent = response.data.flavor_text_entries[0].flavor_text;
+
+            response.data.flavor_text_entries.forEach(function(dex){
+                if(dex.language.name == 'en'){
+                    dexEntry[0].textContent = dex.flavor_text;
+                }
+            })
+
+
+
         })
         .catch(error => console.error('On get pokemon species error', error))
         .then(() => { 
